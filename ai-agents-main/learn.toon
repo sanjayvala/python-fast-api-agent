@@ -1,0 +1,198 @@
+# ============================================================
+#  LEARN.TOON — ramrajya-backend-python
+#  Purpose : Living knowledge base. Capture every insight,
+#            decision, gotcha, and understanding as you build.
+#  Updated : 2026-04-02
+# ============================================================
+
+
+## 🏛️ SYSTEM IDENTITY
+
+  Project  : Ram Rajya Society System — Python Backend
+  Repo     : ramrajya-backend-python
+  Language : Python 3.10+
+  Framework: FastAPI
+  ORM      : SQLAlchemy (async)
+  Schemas  : Pydantic v2
+  Auth     : JWT (HS256), OAuth2 scopes
+  Testing  : Pytest + httpx (TestClient / AsyncClient)
+  Docs     : Auto Swagger at /docs  (redoc at /redoc)
+
+
+## 🗂️ PROJECT STRUCTURE (Intended)
+
+  ramrajya-backend-python/
+  ├── app/
+  │   ├── main.py              ← FastAPI app instance, router include, startup
+  │   ├── api/
+  │   │   └── v1/              ← All versioned route files
+  │   ├── core/
+  │   │   ├── config.py        ← pydantic-settings: reads .env
+  │   │   ├── security.py      ← JWT encode/decode, password hashing
+  │   │   └── logging.py       ← Structured logging setup
+  │   ├── models/              ← SQLAlchemy ORM models (tables)
+  │   ├── schemas/             ← Pydantic v2 request / response schemas
+  │   ├── crud/                ← Thin DB layer: create, read, update, delete
+  │   └── tests/               ← Pytest: conftest.py + test_*.py files
+  ├── .claude/
+  │   ├── agents/              ← AI agent definitions for Claude Code
+  │   └── skills/              ← Reusable AI skill instructions
+  ├── ai-agents-main/          ← Source of agents+skills (reference copy)
+  ├── .env                     ← Local secrets (never commit)
+  ├── requirements.txt
+  ├── progress.toon            ← Task tracker
+  └── learn.toon               ← This file — knowledge base
+
+
+## 🤖 AGENTS & SKILLS (Claude Code)
+
+  ── Agents ──────────────────────────────────────────────────
+  fastapi-backend   Senior Backend Dev
+                    Builds endpoints, schemas, ORM models.
+                    Enforces security checklist before writing code.
+                    Reads: fastapi-standards, fastapi-porm, project-context
+
+  fastapi-tester    QA Automation Engineer
+                    Writes Pytest suites. Covers 401/403/422 security cases.
+                    Reads: fastapi-testing, fastapi-standards, project-context
+
+  ── Skills ──────────────────────────────────────────────────
+  project-context   Shared env, DB config, architecture blueprint
+  fastapi-standards PEP 8, API versioning, error codes, security rules
+  fastapi-porm      Pydantic v2 model patterns, SQLAlchemy ORM helpers
+  fastapi-testing   Pytest fixtures, AsyncClient, auth mocking patterns
+
+  ── Agent Setup ─────────────────────────────────────────────
+  Running /fastapi-backend <task>  inside Claude Code activates the agent.
+  Skills are auto-read by agents from .claude/skills/<name>/SKILL.md
+
+
+## 🔐 AUTHENTICATION & SECURITY
+
+  Algorithm    : HS256 (JWT)
+  Token Expiry : 30 minutes (access token)
+  Scopes       : admin | user | read-only
+  Protected endpoints return:
+    401  — no token / expired token
+    403  — valid token but insufficient scope
+    422  — malformed request body (Pydantic validation)
+
+  RULES (from fastapi-standards):
+  - Never return ORM models directly — always use response_model
+  - No raw SQL — use ORM queries
+  - No hardcoded secrets — use .env via pydantic-settings
+  - No synchronous I/O inside async routes
+
+
+## 🗄️ DATABASE
+
+  DB Type  : PostgreSQL (primary) or MySQL
+  ORM      : SQLAlchemy (async sessions)
+  Migrations: Alembic (track schema changes)
+
+  Connection flow:
+    .env → core/config.py (Settings) → database.py (engine + session) → crud/
+
+  Placeholders to fill in .claude/skills/project-context/SKILL.md:
+    {{API_BASE_URL}}   real API URL
+    {{DB_HOST}}        database host
+    {{DB_NAME}}        database name
+    {{DB_USER}}        database user
+    {{CORS_ORIGINS}}   allowed frontend origins
+
+
+## 📡 API DESIGN RULES
+
+  - All routes versioned under /api/v1/
+  - HTTP verbs:  GET(read) POST(create) PUT(replace) PATCH(partial) DELETE
+  - Standard status codes:
+      200 OK · 201 Created · 204 No Content
+      400 Bad Request · 401 Unauthorized · 403 Forbidden
+      404 Not Found · 422 Unprocessable Entity · 500 Internal Server Error
+  - Swagger must have summary, description, and example for every endpoint
+  - response_model set on every route handler
+
+
+## 📦 MODULES PLANNED
+
+  Module        Route prefix           Key operations
+  ─────────     ──────────────────     ──────────────────────────────
+  Auth          /api/v1/auth           login, logout, refresh-token
+  Users         /api/v1/users          CRUD, role assign
+  Societies     /api/v1/societies      society registration & management
+  Members       /api/v1/members        member onboarding, profiles
+  Payments      /api/v1/payments       fee collection, receipts
+  Notices       /api/v1/notices        announcements, circulars
+  Maintenance   /api/v1/maintenance    maintenance requests, status
+  Reports       /api/v1/reports        financial & activity reports
+
+
+## 🧪 TESTING KNOWLEDGE
+
+  Framework : pytest
+  Client    : httpx.TestClient (sync) or httpx.AsyncClient (async)
+  conftest  : defines fixtures — db session, test client, auth tokens
+
+  Every module needs:
+    test_<module>_create    — 201 happy path
+    test_<module>_read      — 200 happy path
+    test_<module>_update    — 200/204 happy path
+    test_<module>_delete    — 204 happy path
+    test_<module>_401       — missing/invalid token
+    test_<module>_403       — wrong scope
+    test_<module>_422       — bad input data
+
+  Run tests:
+    pytest app/tests/ -v
+    pytest --cov=app --cov-report=term-missing
+
+
+## 🔧 USEFUL COMMANDS
+
+  # Start dev server
+  uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+
+  # Run migrations
+  alembic upgrade head
+
+  # Generate new migration
+  alembic revision --autogenerate -m "describe change"
+
+  # Run tests
+  pytest app/tests/ -v
+
+  # Check coverage
+  pytest --cov=app --cov-report=html
+
+
+## 💡 DECISIONS & RATIONALE
+
+  2026-04-02  Used .claude/ as agent directory (Claude Code standard location)
+  2026-04-02  Agents copied from ai-agents-main/ — original kept as reference
+  2026-04-02  Pydantic v2 chosen (faster, better type inference vs v1)
+  2026-04-02  Async SQLAlchemy preferred for non-blocking DB operations
+
+
+## ⚠️ GOTCHAS & KNOWN ISSUES
+
+  - project-context/SKILL.md still has {{placeholder}} values — fill before dev
+  - DB credentials not yet set — .env file needs to be created
+  - WordPress integration: scope not yet defined
+
+
+## 📝 NOTES (add as you learn)
+
+  # Format: DATE — What you learned / discovered
+  # ─────────────────────────────────────────────
+  2026-04-02 — Project repo initialised; ai-agents-main added as reference
+  2026-04-02 — Agents use $ARGUMENTS variable to accept task descriptions
+  2026-04-02 — Skills are markdown files read by agents before executing a task
+
+
+# ============================================================
+#  HOW TO USE THIS FILE
+#  Add new sections as you learn more about the system.
+#  Use "NOTES" section for quick daily learnings.
+#  Keep "GOTCHAS" updated with unexpected behaviours.
+#  This is a living document — update it constantly.
+# ============================================================

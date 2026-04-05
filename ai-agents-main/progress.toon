@@ -1,0 +1,89 @@
+# ============================================================
+#  PROGRESS TRACKER — ramrajya-backend-python
+#  Updated: 2026-04-02
+#  Purpose: Track what's done, what's in-progress, and what's next.
+# ============================================================
+
+## PROJECT OVERVIEW
+  Name    : Ram Rajya Society System — Python Backend
+  Stack   : FastAPI · Python 3.10+ · SQLAlchemy · Pydantic v2 · Pytest
+  Status  : IN DEVELOPMENT
+
+
+## ✅ COMPLETED
+  [x] 2026-04-02 — Project repository initialised (ramrajya-backend-python)
+  [x] 2026-04-02 — ai-agents-main/ directory added with FastAPI agents & skills
+  [x] 2026-04-02 — .claude/ directory created with agents/ and skills/ copied in
+                    .claude/agents/fastapi-backend.md
+                    .claude/agents/fastapi-tester.md
+                    .claude/skills/fastapi-standards/SKILL.md
+                    .claude/skills/fastapi-testing/SKILL.md
+                    .claude/skills/fastapi-porm/SKILL.md
+                    .claude/skills/project-context/SKILL.md
+  [x] 2026-04-02 — progress.toon & learn.toon files created
+
+
+## 🔄 IN PROGRESS
+  [ ] Configure project-context SKILL.md placeholders:
+        {{API_BASE_URL}}   → e.g. http://localhost:8000
+        {{DB_HOST}}        → e.g. localhost
+        {{DB_NAME}}        → e.g. ram_rajya_db
+        {{DB_USER}}        → e.g. postgres
+        {{CORS_ORIGINS}}   → e.g. http://localhost:3000
+
+
+## 📋 TODO — SETUP
+  [ ] Create virtual environment  (python -m venv venv)
+  [ ] Install dependencies        (pip install -r requirements.txt)
+  [ ] Create .env file with real secrets
+  [ ] Connect to database and run initial migrations
+  [ ] Verify FastAPI server starts (uvicorn app.main:app --reload)
+
+
+## 📋 TODO — DEVELOPMENT
+  [ ] app/main.py              — FastAPI entry point
+  [ ] app/core/config.py       — pydantic-settings environment config
+  [ ] app/core/security.py     — JWT auth helpers
+  [ ] app/api/v1/              — Versioned API routes
+  [ ] app/models/              — SQLAlchemy ORM models
+  [ ] app/schemas/             — Pydantic v2 request/response schemas
+  [ ] app/crud/                — Database CRUD operations
+  [ ] app/tests/               — Pytest suite
+
+  Modules to implement:
+    [ ] Auth          /api/v1/auth      (login, logout, refresh)
+    [ ] Users         /api/v1/users     (CRUD, roles)
+    [ ] Societies     /api/v1/societies
+    [ ] Members       /api/v1/members
+    [ ] Payments      /api/v1/payments
+    [ ] Notices       /api/v1/notices
+    [ ] Maintenance   /api/v1/maintenance
+    [ ] Reports       /api/v1/reports
+
+
+## 📋 TODO — TESTING
+  [ ] Write pytest fixtures (conftest.py)
+  [ ] Security tests: 401, 403, 422 coverage per endpoint
+  [ ] Happy-path integration tests for all CRUD modules
+  [ ] Run pytest and achieve >80% coverage
+
+
+## 📋 TODO — DEPLOYMENT
+  [ ] Dockerfile
+  [ ] docker-compose.yml (app + db)
+  [ ] CI/CD pipeline setup
+  [ ] Production .env configuration
+
+
+## NOTES / BLOCKERS
+  - project-context placeholders still need real values
+  - DB credentials and host TBD
+  - WordPress integration scope TBD
+
+
+# ============================================================
+#  HOW TO USE THIS FILE
+#  Mark tasks:  [x] done  |  [/] in-progress  |  [ ] todo
+#  Add date stamps when completing items.
+#  Keep NOTES section updated with blockers or decisions.
+# ============================================================
